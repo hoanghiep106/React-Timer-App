@@ -25494,13 +25494,13 @@
 	    return React.createElement(
 	        'div',
 	        null,
+	        React.createElement(Nav, null),
 	        React.createElement(
 	            'div',
-	            null,
-	            React.createElement(Nav, null),
+	            { className: 'row' },
 	            React.createElement(
 	                'div',
-	                null,
+	                { className: 'column small-centered medium-6 large-6' },
 	                props.children
 	            )
 	        )
@@ -25613,15 +25613,27 @@
 
 	var React = __webpack_require__(8);
 	var Clock = __webpack_require__(233);
+	var CountdownForm = __webpack_require__(240);
 
 	var Countdown = React.createClass({
 	    displayName: 'Countdown',
 
+	    getInitialState: function getInitialState() {
+	        return {
+	            count: 0
+	        };
+	    },
+	    handleSetCountdown: function handleSetCountdown(seconds) {
+	        this.setState({
+	            count: seconds
+	        });
+	    },
 	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(Clock, { totalSeconds: 112 })
+	            React.createElement(Clock, { totalSeconds: this.state.count }),
+	            React.createElement(CountdownForm, { onSetCountdown: this.handleSetCountdown })
 	        );
 	    }
 	});
@@ -26058,10 +26070,49 @@
 
 
 	// module
-	exports.push([module.id, ".top-bar,\n.top-bar ul {\n  background-color: #333; }\n\n.top-bar .menu-text {\n  color: white; }\n\n.top-bar .menu > .menu-text > a {\n  display: inline;\n  padding: 0; }\n\n.clock {\n  text-align: center;\n  background-color: #B5D0E2;\n  border: 2px solid #2099E8;\n  border-radius: 50%;\n  display: flex;\n  height: 14rem;\n  justify-content: center;\n  margin: 4rem auto;\n  width: 14rem; }\n\n.clock-text {\n  color: white;\n  font-size: 2.25rem;\n  font-weight: 300; }\n", ""]);
+	exports.push([module.id, ".top-bar,\n.top-bar ul {\n  background-color: #333; }\n\n.top-bar .menu-text {\n  color: white; }\n\n.top-bar .menu > .menu-text > a {\n  display: inline;\n  padding: 0; }\n\n.clock {\n  text-align: center;\n  background-color: #B5D0E2;\n  border: 2px solid #2099E8;\n  border-radius: 50%;\n  display: flex;\n  height: 14rem;\n  justify-content: center;\n  margin: 4rem auto;\n  width: 14rem; }\n\n.clock-text {\n  color: white;\n  font-size: 2.25rem;\n  font-weight: 300;\n  padding: 5rem; }\n", ""]);
 
 	// exports
 
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(8);
+
+	var CountdownForm = React.createClass({
+	    displayName: 'CountdownForm',
+
+	    onSubmit: function onSubmit(e) {
+	        e.preventDefault();
+	        var strSeconds = this.refs.seconds.value;
+	        if (strSeconds.length > 0 && strSeconds.match(/^[0-9]*$/)) {
+	            this.refs.seconds.value = '';
+	            this.props.onSetCountdown(parseInt(strSeconds, 10));
+	        }
+	    },
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	                'form',
+	                { ref: 'form', onSubmit: this.onSubmit, className: 'countdown-form' },
+	                React.createElement('input', { type: 'text', ref: 'seconds', placeholder: 'Enter time in seconds' }),
+	                React.createElement(
+	                    'button',
+	                    { className: 'button expanded' },
+	                    'Start'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = CountdownForm;
 
 /***/ })
 /******/ ]);
